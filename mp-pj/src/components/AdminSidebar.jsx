@@ -1,0 +1,135 @@
+import React from 'react';
+import { NavLink } from 'react-router-dom';
+
+const AdminSidebar = ({ isCollapsed, isMobileOpen, onCloseMobile }) => {
+  const menuItems = [
+    {
+      to: '/admin',
+      label: 'จัดการผู้ใช้งาน',
+      end: true, 
+      icon: (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0">
+          <path d="M11.47 3.841a.75.75 0 0 1 1.06 0l8.69 8.69a.75.75 0 1 0 1.06-1.061l-8.689-8.69a2.25 2.25 0 0 0-3.182 0l-8.69 8.69a.75.75 0 1 0 1.061 1.06l8.69-8.689Z" />
+          <path d="m12 5.432 8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 0 1-.75-.75v-4.5a.75.75 0 0 0-.75-.75h-3a.75.75 0 0 0-.75.75V21a.75.75 0 0 1-.75.75H5.625a1.875 1.875 0 0 1-1.875-1.875v-6.198a2.29 2.29 0 0 0 .091-.086L12 5.432Z" />
+        </svg>
+      ),
+    }
+  ];
+
+  return (
+    <>
+      {/* Desktop Sidebar */}
+      <aside
+        className={`
+          hidden md:flex md:flex-col
+          bg-neutral-600 text-white 
+          transition-all duration-300 ease-in-out
+          flex-shrink-0 h-full
+          ${isCollapsed ? 'w-16 md:w-16 lg:w-16' : 'w-58 md:w-58 lg:w-58 xl:w-58'}
+          shadow-lg
+        `}
+      >
+        {/* Menu Items */}
+        <nav className={`flex-1 overflow-y-auto overflow-x-hidden ${isCollapsed ? 'p-2' : 'p-3 md:p-4 lg:p-4'}`}>
+          <div className="space-y-1 md:space-y-2">
+            {menuItems.map((item) => (
+              <NavLink
+                key={item.to}
+                to={item.to}
+                end={item.end} 
+                className={({ isActive }) => `
+                  flex items-center gap-2 md:gap-3
+                  py-2.5 md:py-3
+                  ${isCollapsed ? 'px-2 justify-center' : 'px-3 md:px-4'}
+                  rounded-lg
+                  text-slate-50 
+                  hover:bg-neutral-500 hover:text-white 
+                  transition-all duration-200
+                  text-sm md:text-base
+                  font-medium
+                  ${isActive ? 'bg-neutral-500 shadow-lg ring-2 ring-neutral-400' : ''}
+                `}
+                title={isCollapsed ? item.label : ''}
+              >
+                <span className="flex-shrink-0">{item.icon}</span>
+                {!isCollapsed && (
+                  <span className="whitespace-nowrap overflow-hidden text-ellipsis">{item.label}</span>
+                )}
+              </NavLink>
+            ))}
+          </div>
+        </nav>
+      </aside>
+
+      {/* Mobile Sidebar */}
+      <aside
+        className={`
+          md:hidden
+          fixed top-0 left-0 bottom-0
+          w-64 sm:w-72
+          bg-neutral-600 text-white 
+          shadow-2xl
+          transform transition-transform duration-300 ease-in-out
+          z-30
+          ${isMobileOpen ? 'translate-x-0' : '-translate-x-full'}
+          flex flex-col
+        `}
+      >
+        {/* Header with Close button */}
+        <div className="flex items-center justify-between p-4 sm:p-5 border-b border-neutral-500 flex-shrink-0">
+          <h2 className="text-lg sm:text-xl font-bold">เมนู</h2>
+          <button
+            onClick={onCloseMobile}
+            className="p-2 rounded-lg hover:bg-neutral-500 active:bg-neutral-600 transition-colors touch-manipulation"
+            aria-label="ปิดเมนู"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              className="w-6 h-6 sm:w-7 sm:h-7"
+            >
+              <path
+                fillRule="evenodd"
+                d="M5.47 5.47a.75.75 0 0 1 1.06 0L12 10.94l5.47-5.47a.75.75 0 1 1 1.06 1.06L13.06 12l5.47 5.47a.75.75 0 1 1-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 0 1-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 0 1 0-1.06Z"
+                clipRule="evenodd"
+              />
+            </svg>
+          </button>
+        </div>
+
+        {/* Menu Items */}
+        <nav className="flex-1 overflow-y-auto overflow-x-hidden p-4 sm:p-5">
+          <div className="space-y-2">
+            {menuItems.map((item) => (
+              <NavLink
+                key={item.to}
+                to={item.to}
+                end={item.end} // เพิ่ม prop นี้
+                onClick={onCloseMobile}
+                className={({ isActive }) => `
+                  flex items-center gap-3
+                  py-3 px-4
+                  rounded-lg
+                  text-slate-50 
+                  hover:bg-neutral-500 hover:text-white 
+                  active:bg-neutral-600
+                  transition-all duration-200
+                  text-sm sm:text-base
+                  font-medium
+                  touch-manipulation
+                  ${isActive ? 'bg-neutral-500 shadow-lg ring-2 ring-neutral-400' : ''}
+                `}
+              >
+                {item.icon}
+                <span className="whitespace-nowrap">{item.label}</span>
+              </NavLink>
+            ))}
+          </div>
+        </nav>
+      </aside>
+    </>
+  );
+};
+
+export default AdminSidebar;

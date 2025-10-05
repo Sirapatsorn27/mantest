@@ -6,4 +6,4 @@ const Approve = () => {
   )
 }
 
-export default Approve
+export default Approve;

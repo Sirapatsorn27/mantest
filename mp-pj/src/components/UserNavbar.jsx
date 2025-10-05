@@ -2,7 +2,7 @@ import { Dropdown, DropdownButton, DropdownMenu, DropdownItem, DropdownDivider }
 import { ChevronDownIcon } from '@heroicons/react/solid';
 import { Link } from 'react-router-dom';
 
-const Navbar = ({ onToggleSidebar, onToggleMobileSidebar }) => {
+const UserNavbar = ({ onToggleSidebar, onToggleMobileSidebar }) => {
   const currentUser = {
     firstname: "nakล่าสมบัติ",
     lastname: "Doefdfggdgdf",
@@ -19,7 +19,7 @@ const Navbar = ({ onToggleSidebar, onToggleMobileSidebar }) => {
         <div className="flex justify-between items-center h-14 sm:h-16 md:h-18">
 
           {/* ฝั่งซ้าย: ปุ่มเมนู + โลโก้ */}
-          <div className="flex items-center gap-2 sm:gap-3 md:gap-4">
+          <div className="flex items-center gap-2 sm:gap-3 md:gap-4 -ml-5">
             {/* ปุ่มเมนู Mobile */}
             <button
               onClick={onToggleMobileSidebar}
@@ -62,7 +62,7 @@ const Navbar = ({ onToggleSidebar, onToggleMobileSidebar }) => {
 
             {/* Logo - Responsive */}
             <Link 
-              to="/" 
+              to="/user" 
               className="flex items-center group"
             >
               <img
@@ -182,4 +182,4 @@ const Navbar = ({ onToggleSidebar, onToggleMobileSidebar }) => {
   );
 };
 
-export default Navbar;
+export default UserNavbar;
