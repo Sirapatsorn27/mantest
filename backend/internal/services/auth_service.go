@@ -8,18 +8,15 @@ import (
 
 var jwtSecret = []byte("YOUR_ULTRA_SECURE_SECRET_KEY")
 
-// Hardcoded Credentials สำหรับการทดสอบ Admin
 const AdminTestEmail = "Admin"
 const AdminTestPassword = "1234"
 
 // Authenticate: ตรวจสอบผู้ใช้และสร้าง JWT Token
 func Authenticate(email, password string) (string, string, string, error) {
-	// 1. ตรวจสอบเงื่อนไข Hardcode: Admin / 1234
 	if email != AdminTestEmail || password != AdminTestPassword {
 		return "", "", "", errors.New("authentication failed: invalid test credentials")
 	}
 
-	// 2. สร้าง JWT Claim
 	const AdminRoleName = "Admin" 
 
 	claims := jwt.MapClaims{
@@ -34,6 +31,5 @@ func Authenticate(email, password string) (string, string, string, error) {
 		return "", "", "", errors.New("failed to generate token")
 	}
 
-	// 3. Login สำเร็จ ส่ง Token และ Role กลับไป
 	return tokenString, AdminRoleName, email, nil
 }
