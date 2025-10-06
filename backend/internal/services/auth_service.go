@@ -2,27 +2,38 @@ package services
 
 import (
 	"errors"
+	"strings"
 	"time"
+
 	"github.com/golang-jwt/jwt/v5"
 )
 
 var jwtSecret = []byte("YOUR_ULTRA_SECURE_SECRET_KEY")
 
-const AdminTestEmail = "Admin"
-const AdminTestPassword = "1234"
+// users map: key เป็น lowercase เสมอ
+var users = map[string]struct {
+	Password string
+	RoleName string
+}{
+	"admin":   {Password: "1234", RoleName: "Admin"},
+	"user":    {Password: "1234", RoleName: "User"},
+	"approve": {Password: "1234", RoleName: "Approve"},
+}
 
-// Authenticate: ตรวจสอบผู้ใช้และสร้าง JWT Token
+// Authenticate ตรวจสอบผู้ใช้และสร้าง JWT Token
 func Authenticate(email, password string) (string, string, string, error) {
-	if email != AdminTestEmail || password != AdminTestPassword {
-		return "", "", "", errors.New("authentication failed: invalid test credentials")
+	// แปลง email เป็น lowercase ก่อน lookup
+	email = strings.ToLower(email)
+
+	user, exists := users[email]
+	if !exists || user.Password != password {
+		return "", "", "", errors.New("authentication failed: invalid credentials")
 	}
 
-	const AdminRoleName = "Admin" 
-
 	claims := jwt.MapClaims{
-		"email":       email,
-		"role_name":   AdminRoleName,
-		"exp":         time.Now().Add(time.Hour * 24).Unix(), // Token หมดอายุใน 24 ชม.
+		"email":     email,
+		"role_name": user.RoleName,
+		"exp":       time.Now().Add(time.Hour * 24).Unix(),
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
@@ -31,5 +42,5 @@ func Authenticate(email, password string) (string, string, string, error) {
 		return "", "", "", errors.New("failed to generate token")
 	}
 
-	return tokenString, AdminRoleName, email, nil
+	return tokenString, user.RoleName, email, nil
 }

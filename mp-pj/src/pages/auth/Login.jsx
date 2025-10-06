@@ -14,37 +14,51 @@ const Login = () => {
   };
 
   const handleLogin = async (e) => {
-    e.preventDefault();
-    setError('');
+  e.preventDefault();
+  setError('');
 
-    try {
-      // 1. เรียก API Backend (Go)
-      const response = await fetch('http://localhost:8080/api/v1/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      });
+  try {
+    // เรียก API Backend
+    const response = await fetch('http://localhost:8080/api/v1/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+    });
 
-      const data = await response.json();
+    const data = await response.json();
 
-      if (!response.ok) {
-        // 2. Login ล้มเหลว: แสดงข้อความ Error
-        const errorMessage = data.message || 'Authentication Fail: Please check user or Password';
-        setError(errorMessage);
-        return;
-      }
-
-      // 3. Login สำเร็จ
-      const { token, role } = data;
-      localStorage.setItem('jwt_token', token);
-      localStorage.setItem('user_role', role);
-      navigate('/admin/user-management');
-
-    } catch (err) {
-      console.error('Login error:', err);
-      setError('An unexpected error occurred. Please try again later.');
+    if (!response.ok) {
+      const errorMessage = data.message || 'Authentication Fail: Please check user or Password';
+      setError(errorMessage);
+      return;
     }
-  };
+
+    // Login สำเร็จ
+    const { token, role } = data;
+    localStorage.setItem('jwt_token', token);
+    localStorage.setItem('user_role', role);
+
+    // Navigate ตาม role
+    switch (role.toLowerCase()) {
+      case 'admin':
+        navigate('/admin');             
+        break;
+      case 'approve':
+        navigate('/approver');          
+        break;
+      case 'user':
+        navigate('/user');              
+        break;
+      default:
+        navigate('/');                 
+        break;
+    }
+
+  } catch (err) {
+    console.error('Login error:', err);
+    setError('An unexpected error occurred. Please try again later.');
+  }
+};
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-white p-4">
