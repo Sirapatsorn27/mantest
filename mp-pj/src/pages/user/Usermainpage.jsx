@@ -24,7 +24,7 @@ const mockApiData = [
 const Usermainpage = () => {
   const [documents, setDocuments] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-
+  const [selectedStatus, setSelectedStatus] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const ITEMS_PER_PAGE = 10;
 
@@ -37,18 +37,32 @@ const Usermainpage = () => {
       setDocuments(mockApiData); // นำข้อมูลจำลองมาใส่ใน state
       setIsLoading(false);      // ตั้งค่า loading เป็น false เมื่อข้อมูลมาแล้ว
       console.log("ดึงข้อมูลสำเร็จ!");
-    }, 1500); // จำลองการโหลด 1.5 วินาที
+    }, 1000); 
   }, []); // [] หมายถึงให้ useEffect ทำงานแค่ครั้งเดียวตอนเริ่มต้น
-    const totalPages = Math.ceil(documents.length / ITEMS_PER_PAGE);
 
+    const handleStatusChange = (statusValue) => {
+    setSelectedStatus(statusValue);
+    setCurrentPage(1);
+  };
+  
+  // ... โค้ดส่วน filter, pagination, delete เหมือนเดิมทั้งหมด ...
+    const filteredDocuments = documents.filter(doc => {
+      if (selectedStatus === '') {
+        return true;
+      }
+      return doc.managerStatus === selectedStatus || 
+            doc.hrStatus === selectedStatus || 
+            doc.adminStatus === selectedStatus;
+    });
+
+    const totalPages = Math.ceil(filteredDocuments.length / ITEMS_PER_PAGE);
     const indexOfLastItem = currentPage * ITEMS_PER_PAGE;
     const indexOfFirstItem = indexOfLastItem - ITEMS_PER_PAGE;
 
-    const currentDocuments = documents
+    const currentDocuments = filteredDocuments
     .slice(indexOfFirstItem, indexOfLastItem)
     .map((doc, index) => ({
-      ...doc,
-      // คำนวณลำดับที่ต่อเนื่อง: (index เริ่มต้นของหน้า) + (index ปัจจุบันใน loop) + 1
+      ...doc, 
       itemNumber: indexOfFirstItem + index + 1,
     }));
 
@@ -79,7 +93,10 @@ const Usermainpage = () => {
         <div className="flex items-end space-x-4">
           <div className="flex flex-col">
             <label className="text-sm font-semibold text-gray-500 mb-2">ค้นหา</label>
-            <UserStatusDropdown />
+            <UserStatusDropdown 
+              value={selectedStatus}
+              onChange={handleStatusChange}
+            />
           </div>
           <button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md">
             Search

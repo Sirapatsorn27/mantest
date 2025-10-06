@@ -1,10 +1,9 @@
 // src/components/DocumentTable.jsx
 
 import React from 'react';
-import { PrinterIcon, TrashIcon } from "@heroicons/react/solid";
+import { TrashIcon } from "@heroicons/react/solid";
 
-// --- New and Improved StatusBadge Component ---
-// คอมโพเนนต์ Badge ที่ดีไซน์ใหม่ให้ดูทันสมัย
+// --- StatusBadge Component (เหมือนเดิม) ---
 const StatusBadge = ({ status }) => {
   const baseClasses = 'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium';
   let statusClasses = '';
@@ -31,8 +30,7 @@ const StatusBadge = ({ status }) => {
   );
 };
 
-
-const DocumentTable = ({ documents, isLoading, onPrint, onDelete }) => {
+const UserListTable = ({ documents, isLoading, onDelete }) => {
   if (isLoading) {
     return <div className="text-center py-16 text-gray-500">กำลังโหลดข้อมูล...</div>;
   }
@@ -42,30 +40,36 @@ const DocumentTable = ({ documents, isLoading, onPrint, onDelete }) => {
   }
 
   return (
-    // --- Container with shadow and rounded corners ---
     <div className="overflow-hidden rounded-lg border border-gray-200 shadow-md">
       <div className="overflow-x-auto">
-        <table className="w-full min-w-full divide-y divide-gray-200">
-          {/* --- Refined Table Header --- */}
+        {/* --- แก้ไขตรงนี้: เอา divide-y ออกจาก table --- */}
+        <table className="w-full min-w-full">
           <thead className="bg-gray-50">
+            {/* --- แถวที่ 1: สำหรับหัวข้อกลุ่ม "สถานะ" --- */}
             <tr>
-              {/* Increased padding (px-6 py-3), uppercase, and lighter text */}
-              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">No.</th>
-              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">เลขที่เอกสาร</th>
-              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">วันที่เอกสาร</th>
-              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">แผนก</th>
-              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ต้นสังกัด</th>
-              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">HR</th>
-              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ฝ่ายบริหาร</th>
-              <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">วันที่ครบกำหนด</th>
+              <th scope="col" colSpan="4" className="px-6 pt-3"></th>
+              <th scope="colgroup" colSpan="3" className="px-6 pt-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                สถานะ
+              </th>
+              <th scope="col" colSpan="2" className="px-6 pt-3"></th>
+            </tr>
+            {/* --- แถวที่ 2: สำหรับหัวข้อทั้งหมด (จัดกลางทั้งหมด) --- */}
+            <tr>
+              <th scope="col" className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">No.</th>
+              <th scope="col" className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">เลขที่เอกสาร</th>
+              <th scope="col" className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">วันที่เอกสาร</th>
+              <th scope="col" className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">แผนก</th>
+              <th scope="col" className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">ต้นสังกัด</th>
+              <th scope="col" className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">HR</th>
+              <th scope="col" className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">ฝ่ายบริหาร</th>
+              <th scope="col" className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">วันที่ครบกำหนด</th>
               <th scope="col" className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
             </tr>
           </thead>
-          {/* --- Table Body with more vertical spacing --- */}
+          {/* --- แก้ไขตรงนี้: เพิ่ม divide-y เข้าไปที่ tbody --- */}
           <tbody className="bg-white divide-y divide-gray-200">
-            {documents.map((doc, index) => (
+            {documents.map((doc) => (
               <tr key={doc.id} className="hover:bg-gray-50 transition-colors">
-                {/* Increased padding (px-6 py-4) and added whitespace-nowrap */}
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{doc.itemNumber}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{doc.documentNumber}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{doc.documentDate}</td>
@@ -74,7 +78,6 @@ const DocumentTable = ({ documents, isLoading, onPrint, onDelete }) => {
                 <td className="px-6 py-4 whitespace-nowrap"><StatusBadge status={doc.hrStatus} /></td>
                 <td className="px-6 py-4 whitespace-nowrap"><StatusBadge status={doc.adminStatus} /></td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{doc.dueDate}</td>
-                {/* --- Refined Action Buttons --- */}
                 <td className="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
                   <div className="flex items-center justify-center space-x-4">
                     <button 
@@ -95,4 +98,4 @@ const DocumentTable = ({ documents, isLoading, onPrint, onDelete }) => {
   );
 };
 
-export default DocumentTable;
+export default UserListTable;
