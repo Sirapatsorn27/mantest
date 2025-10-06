@@ -2,11 +2,11 @@ import { Dropdown, DropdownButton, DropdownMenu, DropdownItem, DropdownDivider }
 import { ChevronDownIcon } from '@heroicons/react/solid';
 import { Link } from 'react-router-dom';
 
-const UserNavbar = ({ onToggleSidebar, onToggleMobileSidebar }) => {
+const UserNavbar = ({ onToggleSidebar }) => {
   const currentUser = {
     firstname: "nakล่าสมบัติ",
     lastname: "Doefdfggdgdf",
-    role: "Admin",
+    role: "user",
   };
 
   const signOut = () => {
@@ -15,42 +15,22 @@ const UserNavbar = ({ onToggleSidebar, onToggleMobileSidebar }) => {
 
   return (
     <nav className="bg-neutral-600 shadow-lg sticky top-0 z-50">
-      <div className="w-full px-3 sm:px-4 md:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-14 sm:h-16 md:h-18">
+      <div className="w-full px-8">
+        <div className="flex justify-between items-center h-18">
 
           {/* ฝั่งซ้าย: ปุ่มเมนู + โลโก้ */}
-          <div className="flex items-center gap-2 sm:gap-3 md:gap-4 -ml-5">
-            {/* ปุ่มเมนู Mobile */}
-            <button
-              onClick={onToggleMobileSidebar}
-              className="md:hidden p-1.5 sm:p-2 hover:bg-neutral-500 rounded-lg transition-colors active:scale-95 touch-manipulation"
-              aria-label="Toggle mobile menu"
-            >
-              <svg 
-                xmlns="http://www.w3.org/2000/svg" 
-                viewBox="0 0 24 24" 
-                fill="white" 
-                className="w-5 h-5 sm:w-6 sm:h-6"
-              >
-                <path 
-                  fillRule="evenodd" 
-                  d="M3 6.75A.75.75 0 0 1 3.75 6h16.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 6.75ZM3 12a.75.75 0 0 1 .75-.75h16.5a.75.75 0 0 1 0 1.5H3.75A.75.75 0 0 1 3 12Zm0 5.25a.75.75 0 0 1 .75-.75h16.5a.75.75 0 0 1 0 1.5H3.75a.75.75 0 0 1-.75-.75Z" 
-                  clipRule="evenodd" 
-                />
-              </svg>
-            </button>
-
-            {/* ปุ่มเมนู Desktop */}
+          <div className="flex items-center gap-4 -ml-5">
+            {/* ปุ่มเมนู */}
             <button
               onClick={onToggleSidebar}
-              className="hidden md:block p-2 hover:bg-neutral-500 rounded-lg transition-colors active:scale-95"
+              className="p-2 hover:bg-neutral-500 rounded-lg transition-colors active:scale-95"
               aria-label="Toggle sidebar"
             >
               <svg 
                 xmlns="http://www.w3.org/2000/svg" 
                 viewBox="0 0 24 24" 
                 fill="white" 
-                className="w-5 h-5 lg:w-6 lg:h-6"
+                className="w-6 h-6"
               >
                 <path 
                   fillRule="evenodd" 
@@ -60,7 +40,7 @@ const UserNavbar = ({ onToggleSidebar, onToggleMobileSidebar }) => {
               </svg>
             </button>
 
-            {/* Logo - Responsive */}
+            {/* Logo */}
             <Link 
               to="/user" 
               className="flex items-center group"
@@ -68,31 +48,23 @@ const UserNavbar = ({ onToggleSidebar, onToggleMobileSidebar }) => {
               <img
                 src="/images/nakla.svg"
                 alt="Manpower"
-                className="h-8 sm:h-10 md:h-12 lg:h-13 w-auto group-hover:scale-110 transition-transform duration-200"
+                className="h-13 w-auto group-hover:scale-110 transition-transform duration-200"
               />
             </Link>
-
-            {/* Company Name - แสดงเฉพาะ desktop
-            <div className="hidden lg:block">
-              <h1 className="text-white font-semibold text-sm lg:text-base xl:text-lg">
-                ระบบจัดการกำลังคน
-              </h1>
-            </div> */}
-            
           </div>
 
           {/* ฝั่งขวา: Notification and Profile */}
-          <div className="flex items-center gap-1 sm:gap-2 md:gap-3">
+          <div className="flex items-center gap-3">
             {/* Notification Button */}
             <button 
-              className="p-1.5 sm:p-2 hover:bg-neutral-500 rounded-lg transition-colors active:scale-95 touch-manipulation relative"
+              className="p-2 hover:bg-neutral-500 rounded-lg transition-colors active:scale-95 relative"
               aria-label="Notifications"
             >
               <svg 
                 xmlns="http://www.w3.org/2000/svg" 
                 viewBox="0 0 24 24" 
                 fill="white" 
-                className="w-5 h-5 sm:w-6 sm:h-6"
+                className="w-6 h-6"
               >
                 <path 
                   fillRule="evenodd" 
@@ -100,20 +72,19 @@ const UserNavbar = ({ onToggleSidebar, onToggleMobileSidebar }) => {
                   clipRule="evenodd" 
                 />
               </svg>
-      
             </button>
 
             {/* User Profile with Dropdown */}
             <Dropdown className="hover:bg-neutral-500 rounded-xl">
-              <DropdownButton className="flex items-center gap-2 sm:gap-3 px-2 sm:px-3 py-1.5 sm:py-2 rounded-xl cursor-pointer transition-colors active:scale-95 touch-manipulation">
+              <DropdownButton className="flex items-center gap-3 px-3 py-2 rounded-xl cursor-pointer transition-colors active:scale-95">
                 {/* Avatar */}
-                <div className="w-7 h-7 sm:w-8 sm:h-8 md:w-9 md:h-9 rounded-lg bg-amber-700 flex items-center justify-center text-white font-medium text-sm sm:text-base md:text-lg flex-shrink-0">
+                <div className="w-9 h-9 rounded-lg bg-amber-700 flex items-center justify-center text-white font-medium text-lg">
                   {currentUser.firstname.charAt(0)}
                 </div>
 
-                {/* User Info - ซ่อนบน mobile เล็ก */}
-                <div className="hidden sm:block text-left max-w-[120px] md:max-w-[150px] lg:max-w-none">
-                  <div className="text-xs md:text-sm font-medium text-white truncate">
+                {/* User Info */}
+                <div className="text-left">
+                  <div className="text-sm font-medium text-white truncate">
                     {currentUser.firstname}
                   </div>
                   <div className="text-xs text-gray-400 truncate">
@@ -121,28 +92,18 @@ const UserNavbar = ({ onToggleSidebar, onToggleMobileSidebar }) => {
                   </div>
                 </div>
 
-                {/* Chevron Icon - ซ่อนบน mobile เล็ก */}
-                <ChevronDownIcon className="hidden sm:block w-4 h-4 md:w-5 md:h-5 text-gray-400 flex-shrink-0" />
+                {/* Chevron Icon */}
+                <ChevronDownIcon className="w-5 h-5 text-gray-400" />
               </DropdownButton>
 
-              <DropdownMenu className="w-48 sm:w-56">
-                {/* User Info Header - แสดงเฉพาะใน dropdown บน mobile */}
-                <div className="sm:hidden px-4 py-3 border-b border-gray-200">
-                  <div className="text-sm font-medium text-gray-900 truncate">
-                    {currentUser.firstname} {currentUser.lastname}
-                  </div>
-                  <div className="text-xs text-gray-500">
-                    {currentUser.role}
-                  </div>
-                </div>
-
+              <DropdownMenu className="w-56">
                 <DropdownItem>
-                  <Link to="/profile" className="flex items-center gap-2 sm:gap-3 w-full py-1">
+                  <Link to="/profile" className="flex items-center gap-3 w-full py-1">
                     <svg 
                       xmlns="http://www.w3.org/2000/svg" 
                       viewBox="0 0 24 24" 
                       fill="gray" 
-                      className="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0"
+                      className="w-6 h-6"
                     >
                       <path 
                         fillRule="evenodd" 
@@ -150,19 +111,19 @@ const UserNavbar = ({ onToggleSidebar, onToggleMobileSidebar }) => {
                         clipRule="evenodd" 
                       />
                     </svg>
-                    <span className="text-sm sm:text-base">My Profile</span>
+                    <span>My Profile</span>
                   </Link>
                 </DropdownItem>
 
                 <DropdownDivider />
 
                 <DropdownItem onClick={signOut}>
-                  <div className="flex items-center gap-2 sm:gap-3 py-1">
+                  <div className="flex items-center gap-3 py-1">
                     <svg 
                       xmlns="http://www.w3.org/2000/svg" 
                       viewBox="0 0 24 24" 
                       fill="gray" 
-                      className="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0"
+                      className="w-6 h-6"
                     >
                       <path 
                         fillRule="evenodd" 
@@ -170,7 +131,7 @@ const UserNavbar = ({ onToggleSidebar, onToggleMobileSidebar }) => {
                         clipRule="evenodd" 
                       />
                     </svg>
-                    <span className="text-sm sm:text-base text-red-600 font-medium">ออกจากระบบ</span>
+                    <span className="text-red-600 font-medium">ออกจากระบบ</span>
                   </div>
                 </DropdownItem>
               </DropdownMenu>

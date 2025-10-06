@@ -3,50 +3,26 @@ import { Outlet } from 'react-router-dom';
 import ApproverNavbar from '../components/ApproverNavbar';
 import ApproverSidebar from '../components/ApproverSidebar';
 
-
-
 const Approverlayout = () => {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
-  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
 
   const toggleSidebar = () => {
     setIsSidebarCollapsed(!isSidebarCollapsed);
   };
 
-  const toggleMobileSidebar = () => {
-    setIsMobileSidebarOpen(!isMobileSidebarOpen);
-  };
-
   return (
     <div className="flex flex-col h-screen w-full overflow-hidden">
       {/* Navbar - Fixed at top */}
-      <ApproverNavbar
-        onToggleSidebar={toggleSidebar} 
-        onToggleMobileSidebar={toggleMobileSidebar}
-      />
+      <ApproverNavbar onToggleSidebar={toggleSidebar} />
 
-      <div className="flex flex-1 overflow-hidden relative">
-        {/* Overlay for mobile - Enhanced with smooth transition */}
-        {isMobileSidebarOpen && (
-          <div 
-            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-20 md:hidden transition-opacity duration-300"
-            onClick={toggleMobileSidebar}
-            aria-hidden="true"
-          />
-        )}
-
+      <div className="flex flex-1 overflow-hidden">
         {/* Sidebar */}
-        <ApproverSidebar 
-          isCollapsed={isSidebarCollapsed}
-          isMobileOpen={isMobileSidebarOpen}
-          onCloseMobile={toggleMobileSidebar}
-        />
+        <ApproverSidebar isCollapsed={isSidebarCollapsed} />
 
-        {/* Content Area - Scrollable with responsive padding */}
+        {/* Content Area - Scrollable */}
         <main className="flex-1 overflow-y-auto overflow-x-hidden bg-gray-50 w-full">
           <div className="min-h-full">
-            {/* Responsive Container */}
-            <div className="w-full max-w-[100vw] mx-auto px-3 py-3 sm:px-4 sm:py-4 md:px-6 md:py-5 lg:px-8 lg:py-6 xl:px-10 xl:py-8">
+            <div className="w-full max-w-[100vw] mx-auto px-10 py-8">
               <Outlet />
             </div>
           </div>
